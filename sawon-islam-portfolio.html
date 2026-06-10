@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sawon Islam — The Comeback Arc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#020202;--dark:#0a0505;--abyss:#110808;
+  --blood:#8b0000;--crimson:#cc0000;--red:#ff1a1a;--nred:#ff4444;
+  --gold:#c8960c;--gold2:#f0b429;--gold3:#ffe082;
+  --white:#fff8f0;--muted:#9a7a6a;--dim:#4a3028;
+  --glass:rgba(10,5,5,0.75);--glass2:rgba(139,0,0,0.08);
+  --border:rgba(200,150,12,0.2);--rborder:rgba(255,26,26,0.18);
+  --glow-r:0 0 30px rgba(255,26,26,0.3);--glow-g:0 0 30px rgba(200,150,12,0.3);
+  --glow-g2:0 0 60px rgba(200,150,12,0.2);
+  --ff-title:'Cinzel Decorative',serif;--ff-body:'Rajdhani',sans-serif;
+  --ff-mono:'Share Tech Mono',monospace;--ff-impact:'Bebas Neue',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--void);color:var(--white);font-family:var(--ff-body);overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--blood),var(--gold));border-radius:2px}
+
+/* CURSOR */
+#cur{position:fixed;pointer-events:none;z-index:99999;width:18px;height:18px;transform:translate(-50%,-50%);transition:transform .15s}
+#cur svg{width:100%;height:100%;animation:curSpin 4s linear infinite}
+@keyframes curSpin{to{transform:rotate(360deg)}}
+#ctr{position:fixed;pointer-events:none;z-index:99998;width:40px;height:40px;border:1px solid rgba(200,150,12,0.45);border-radius:50%;transform:translate(-50%,-50%);transition:left .1s ease,top .1s ease,width .2s,height .2s}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--void);z-index:100000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#lc{position:absolute;inset:0}
+.l-inner{position:relative;z-index:2;text-align:center}
+.l-eye{width:64px;height:64px;margin:0 auto 1.5rem}
+.l-eye svg{width:100%;height:100%}
+.l-name{font-family:var(--ff-title);font-size:clamp(2.5rem,7vw,5rem);font-weight:900;color:transparent;background:linear-gradient(135deg,var(--blood),var(--red),var(--gold));-webkit-background-clip:text;background-clip:text;line-height:1;animation:namePulse 2s ease-in-out infinite alternate}
+@keyframes namePulse{from{filter:drop-shadow(0 0 15px rgba(255,26,26,.5))}to{filter:drop-shadow(0 0 40px rgba(200,150,12,.7))}}
+.l-arc{font-family:var(--ff-mono);font-size:.62rem;color:var(--gold);letter-spacing:6px;margin:.6rem 0 2rem;opacity:.7}
+.l-bwrap{width:300px;height:2px;background:rgba(139,0,0,0.2);border-radius:1px;margin:0 auto;overflow:hidden}
+.l-bfill{height:100%;width:0;background:linear-gradient(90deg,var(--blood),var(--crimson),var(--gold));box-shadow:0 0 10px var(--red);transition:width .04s linear}
+.l-pct{font-family:var(--ff-mono);font-size:.78rem;color:var(--gold);margin-top:.6rem;letter-spacing:3px}
+.l-st{font-family:var(--ff-mono);font-size:.58rem;color:rgba(200,150,12,.5);margin-top:.3rem;height:.85rem;letter-spacing:2px}
+#loader.lo{animation:loOut .7s ease forwards}
+@keyframes loOut{to{opacity:0;pointer-events:none}}
+
+/* EMBERS */
+#embers{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.ember{position:absolute;border-radius:50%;animation:emberUp linear infinite}
+@keyframes emberUp{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:1}90%{opacity:.3}100%{transform:translateY(-100vh) translateX(var(--ex)) scale(.2);opacity:0}}
+
+/* SCAN */
+.scan{position:fixed;inset:0;pointer-events:none;z-index:9980;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px)}
+.vig{position:fixed;inset:0;pointer-events:none;z-index:9979;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.55) 100%)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.85rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(2,2,2,.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,0,0,.3);transition:background .3s}
+.nb{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.nb-ico{width:30px;height:30px;flex-shrink:0}
+.nb-ico svg{width:100%;height:100%}
+.nb-nm{font-family:var(--ff-title);font-size:.82rem;font-weight:700;color:var(--gold);letter-spacing:2px}
+.nb-nm span{color:var(--red)}
+.nl{display:flex;gap:2.2rem;list-style:none}
+.nl a{font-family:var(--ff-mono);font-size:.65rem;color:var(--muted);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s;position:relative}
+.nl a::before{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .3s}
+.nl a:hover{color:var(--gold)}
+.nl a:hover::before{width:100%}
+.nhire{font-family:var(--ff-mono);font-size:.62rem;padding:.38rem 1.1rem;border:1px solid var(--gold);color:var(--gold);text-decoration:none;letter-spacing:2px;transition:all .25s;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.nhire:hover{background:rgba(200,150,12,.1);box-shadow:var(--glow-g)}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:none}
+.hbg span{width:22px;height:1.5px;background:var(--gold);display:block}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:5rem 2rem 4rem}
+#hc{position:absolute;inset:0;z-index:0}
+.hbkg{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}
+.hbkg-txt{font-family:var(--ff-title);font-size:clamp(10rem,30vw,26rem);font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(139,0,0,.07);line-height:1;user-select:none;animation:bgPulse 5s ease-in-out infinite alternate}
+@keyframes bgPulse{from{-webkit-text-stroke:1px rgba(139,0,0,.05)}to{-webkit-text-stroke:1px rgba(200,150,12,.09)}}
+.hi{position:relative;z-index:2;text-align:center;max-width:980px}
+.h-tag{font-family:var(--ff-mono);font-size:.62rem;color:var(--gold);letter-spacing:5px;text-transform:uppercase;margin-bottom:1.2rem;opacity:0;animation:fadeUp .7s .4s forwards;display:flex;align-items:center;justify-content:center;gap:1rem}
+.h-tag::before,.h-tag::after{content:'';flex:1;max-width:80px;height:1px}
+.h-tag::before{background:linear-gradient(90deg,transparent,var(--gold))}
+.h-tag::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.h-name{font-family:var(--ff-title);font-size:clamp(2.5rem,9vw,7.5rem);font-weight:900;line-height:.95;letter-spacing:-1px;margin-bottom:.5rem;opacity:0;animation:fadeUp .9s .6s forwards}
+.n1{color:var(--white);display:block}
+.n2{display:block;color:transparent;background:linear-gradient(135deg,var(--crimson) 0%,var(--red) 40%,var(--gold) 70%,var(--gold3) 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 40px rgba(255,26,26,.4))}
+.h-eyes{display:flex;justify-content:center;gap:2rem;margin:.7rem 0;opacity:0;animation:fadeUp .6s .8s forwards}
+.h-eye{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red),0 0 24px rgba(255,26,26,.4);animation:eyeBlink 3s ease-in-out infinite}
+@keyframes eyeBlink{0%,90%,100%{opacity:1}95%{opacity:0}}
+.h-role{font-family:var(--ff-impact);font-size:clamp(1rem,2.5vw,1.6rem);letter-spacing:6px;color:var(--red);min-height:2.2rem;opacity:0;animation:fadeUp .7s .9s forwards}
+.h-cb{display:inline-block;width:2px;height:1em;background:var(--gold);vertical-align:middle;margin-left:2px;animation:blink .8s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.h-desc{color:var(--muted);max-width:540px;margin:1.2rem auto;line-height:1.9;font-size:.95rem;opacity:0;animation:fadeUp .7s 1.1s forwards}
+.h-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.8rem;opacity:0;animation:fadeUp .7s 1.3s forwards}
+.btn-b{padding:.72rem 1.9rem;background:linear-gradient(135deg,var(--blood),var(--crimson));color:var(--white);font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:3px;text-decoration:none;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:all .3s;display:inline-block}
+.btn-b:hover{background:linear-gradient(135deg,var(--crimson),var(--red));box-shadow:var(--glow-r);transform:translateY(-2px)}
+.btn-g{padding:.72rem 1.9rem;border:1px solid var(--gold);color:var(--gold);font-family:var(--ff-mono);font-size:.7rem;letter-spacing:3px;text-decoration:none;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:all .3s;background:transparent;display:inline-block}
+.btn-g:hover{background:rgba(200,150,12,.1);box-shadow:var(--glow-g);transform:translateY(-2px)}
+.h-stats{display:flex;gap:3rem;justify-content:center;margin-top:3rem;flex-wrap:wrap;opacity:0;animation:fadeUp .7s 1.5s forwards}
+.hst .sn{font-family:var(--ff-impact);font-size:2.4rem;color:var(--gold);display:block;line-height:1}
+.hst .sl{font-family:var(--ff-mono);font-size:.55rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:.35rem}
+.hscroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;animation:fadeIn 1s 2s forwards}
+.hsl{width:1px;height:44px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scAnim 2.2s ease-in-out infinite}
+@keyframes scAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hst-txt{font-family:var(--ff-mono);font-size:.55rem;color:var(--muted);letter-spacing:4px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* SECTIONS */
+section{padding:6rem 2rem;position:relative}
+.sw{max-width:1200px;margin:0 auto}
+.s-ey{font-family:var(--ff-mono);font-size:.58rem;color:var(--red);letter-spacing:6px;text-transform:uppercase;margin-bottom:.55rem;display:flex;align-items:center;gap:.7rem}
+.s-ey::before{content:'';width:18px;height:1px;background:var(--red)}
+.s-title{font-family:var(--ff-title);font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:900;color:var(--white);line-height:1.1;margin-bottom:.6rem}
+.s-title span{color:transparent;background:linear-gradient(135deg,var(--red),var(--gold));-webkit-background-clip:text;background-clip:text}
+.s-rule{width:50px;height:2px;background:linear-gradient(90deg,var(--blood),var(--gold));margin-bottom:2.5rem;position:relative}
+.s-rule::after{content:'';position:absolute;right:-8px;top:-3px;width:8px;height:8px;background:var(--gold);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(35px);transition:opacity .7s ease,transform .7s ease}
+.rvl{opacity:0;transform:translateX(-35px);transition:opacity .7s ease,transform .7s ease}
+.rvr{opacity:0;transform:translateX(35px);transition:opacity .7s ease,transform .7s ease}
+.rv.on,.rvl.on,.rvr.on{opacity:1;transform:none}
+
+/* ABOUT */
+#about{background:linear-gradient(180deg,var(--void) 0%,var(--dark) 100%)}
+.ag{display:grid;grid-template-columns:1fr 1.1fr;gap:4.5rem;align-items:center}
+.a-sigil{display:flex;align-items:center;justify-content:center}
+.sigil-svg{width:100%;max-width:360px;margin:0 auto}
+.a-badges{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:1.7rem}
+.abadge{background:var(--glass);border:1px solid var(--border);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);padding:1rem;transition:all .3s;backdrop-filter:blur(10px)}
+.abadge:hover{border-color:rgba(200,150,12,.5);box-shadow:var(--glow-g);transform:translateY(-2px)}
+.abadge .abi{font-size:1.3rem;display:block;margin-bottom:.35rem}
+.abadge h4{font-family:var(--ff-mono);font-size:.58rem;color:var(--gold);letter-spacing:2px;margin-bottom:.25rem}
+.abadge p{font-size:.75rem;color:var(--muted);line-height:1.6}
+.at p{color:var(--muted);line-height:1.95;margin-bottom:1.1rem;font-size:.93rem}
+.at .hl{color:var(--gold);font-weight:600}
+.at .hlr{color:var(--red);font-weight:600}
+.a-quote{margin:1.4rem 0;padding:.9rem 1.4rem;border-left:2px solid var(--blood);background:rgba(139,0,0,.06)}
+.a-quote p{font-family:var(--ff-title);font-size:.8rem;color:var(--gold);font-style:italic;line-height:1.7;margin:0}
+.msts{display:flex;gap:2.2rem;margin-top:1.8rem;flex-wrap:wrap}
+.mst .mn{font-family:var(--ff-impact);font-size:2rem;color:var(--red);display:block;line-height:1}
+.mst .ml{font-family:var(--ff-mono);font-size:.56rem;color:var(--muted);letter-spacing:2px}
+
+/* SKILLS */
+#skills{background:var(--dark)}
+.sk-tabs{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.sk-tab{font-family:var(--ff-mono);font-size:.6rem;padding:.38rem .9rem;border:1px solid var(--dim);color:var(--muted);background:transparent;cursor:none;letter-spacing:2px;transition:all .25s;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+.sk-tab.on,.sk-tab:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,150,12,.07)}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.1rem}
+.sk-card{background:var(--glass);border:1px solid rgba(139,0,0,.25);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);padding:1.3rem;backdrop-filter:blur(12px);transition:all .35s;position:relative;overflow:hidden}
+.sk-card::before{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 16px 16px 0;border-color:transparent rgba(200,150,12,.25) transparent transparent;transition:border-color .3s}
+.sk-card:hover{border-color:rgba(200,150,12,.4);transform:translateY(-3px);box-shadow:var(--glow-g2)}
+.sk-card:hover::before{border-color:transparent var(--gold) transparent transparent}
+.sk-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem}
+.sk-nm{font-family:var(--ff-body);font-weight:600;font-size:.88rem;color:var(--white)}
+.sk-p{font-family:var(--ff-mono);font-size:.7rem;color:var(--gold)}
+.sk-bg{height:2px;background:rgba(139,0,0,.2);overflow:hidden}
+.sk-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blood),var(--red),var(--gold));transition:width 1.3s ease}
+.sk-tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.65rem}
+.sk-tag{font-family:var(--ff-mono);font-size:.53rem;padding:.12rem .45rem;background:rgba(139,0,0,.12);border:1px solid rgba(200,150,12,.15);color:var(--muted)}
+
+/* INTERESTS */
+#interests{background:linear-gradient(180deg,var(--dark) 0%,var(--abyss) 100%)}
+.int-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1.1rem}
+.int-card{background:var(--glass);border:1px solid var(--rborder);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));padding:1.4rem 1.1rem;text-align:center;transition:all .4s;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.int-card:hover{border-color:rgba(255,26,26,.5);box-shadow:var(--glow-r);transform:translateY(-5px) scale(1.02)}
+.int-ico{font-size:2rem;display:block;margin-bottom:.7rem;filter:drop-shadow(0 0 6px rgba(255,26,26,.3))}
+.int-card h3{font-family:var(--ff-body);font-weight:700;font-size:.82rem;color:var(--white);margin-bottom:.35rem}
+.int-card p{font-size:.73rem;color:var(--muted);line-height:1.6}
+.int-badge{font-family:var(--ff-mono);font-size:.52rem;color:var(--red);letter-spacing:2px;margin-top:.45rem;display:block}
+
+/* ANIME FAVES */
+#animefaves{background:var(--abyss)}
+.faves-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1rem}
+.fave-card{background:var(--glass);border:1px solid var(--border);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);padding:1.1rem .95rem;text-align:center;transition:all .3s;backdrop-filter:blur(10px)}
+.fave-card:hover{border-color:var(--gold);box-shadow:var(--glow-g);transform:translateY(-3px)}
+.fave-e{font-size:1.7rem;display:block;margin-bottom:.45rem}
+.fave-t{font-family:var(--ff-body);font-weight:700;font-size:.8rem;color:var(--white);margin-bottom:.18rem}
+.fave-ty{font-family:var(--ff-mono);font-size:.56rem;color:var(--gold);letter-spacing:1px}
+.fave-r{font-family:var(--ff-mono);font-size:.58rem;color:var(--red);margin-top:.28rem}
+
+/* PROJECTS */
+#projects{background:var(--dark)}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1.8rem}
+.proj-card{background:var(--glass);border:1px solid var(--rborder);clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));overflow:hidden;transition:all .45s;position:relative;backdrop-filter:blur(12px)}
+.proj-card:hover{box-shadow:0 20px 60px rgba(139,0,0,.25),0 0 1px var(--gold);border-color:rgba(200,150,12,.4);transform:translateY(-6px)}
+.proj-img{height:170px;background:var(--abyss);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--rborder)}
+.proj-ico{font-size:3rem;position:relative;z-index:1;filter:drop-shadow(0 0 18px rgba(255,26,26,.4))}
+.proj-ov{position:absolute;inset:0;background:rgba(2,2,2,.92);display:flex;align-items:center;justify-content:center;gap:1rem;opacity:0;transition:opacity .3s;z-index:2}
+.proj-card:hover .proj-ov{opacity:1}
+.plink{padding:.42rem 1rem;font-family:var(--ff-mono);font-size:.6rem;letter-spacing:2px;text-decoration:none;transition:all .2s}
+.plink.gh{border:1px solid var(--dim);color:var(--muted)}
+.plink.gh:hover{border-color:var(--gold);color:var(--gold)}
+.plink.lv{background:linear-gradient(135deg,var(--blood),var(--gold));color:var(--void);font-weight:700}
+.proj-body{padding:1.3rem}
+.ptags{display:flex;gap:.32rem;flex-wrap:wrap;margin-bottom:.65rem}
+.ptag{font-family:var(--ff-mono);font-size:.52rem;padding:.12rem .45rem;background:rgba(139,0,0,.15);border:1px solid rgba(200,150,12,.15);color:var(--gold)}
+.proj-card h3{font-family:var(--ff-body);font-weight:700;font-size:1rem;color:var(--white);margin-bottom:.38rem}
+.proj-card p{color:var(--muted);font-size:.78rem;line-height:1.7}
+
+/* GAMING */
+#gaming{background:linear-gradient(180deg,var(--dark) 0%,var(--abyss) 100%)}
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.1rem}
+.game-card{background:var(--glass);border:1px solid var(--border);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);padding:1.3rem;transition:all .3s;text-align:center;backdrop-filter:blur(10px)}
+.game-card:hover{border-color:rgba(255,26,26,.5);box-shadow:var(--glow-r);transform:translateY(-3px)}
+.game-ico{font-size:1.9rem;display:block;margin-bottom:.65rem}
+.game-card h3{font-family:var(--ff-body);font-weight:700;font-size:.88rem;color:var(--white);margin-bottom:.25rem}
+.game-lv{font-family:var(--ff-mono);font-size:.58rem;color:var(--gold);letter-spacing:2px;margin-bottom:.4rem}
+.game-hr{font-family:var(--ff-mono);font-size:.58rem;color:var(--muted)}
+.rbg{height:2px;background:rgba(200,150,12,.1);margin-top:.65rem}
+.rb{height:100%;background:linear-gradient(90deg,var(--blood),var(--gold))}
+
+/* TIMELINE */
+#journey{background:var(--abyss)}
+.jg{display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start}
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--blood) 10%,var(--gold) 50%,var(--blood) 90%,transparent)}
+.tl-item{position:relative;padding:0 0 2.8rem 2.4rem}
+.tl-gem{position:absolute;left:-5px;top:2px;width:10px;height:10px;background:var(--void);border:2px solid var(--blood);transform:rotate(45deg);transition:all .4s}
+.tl-item:hover .tl-gem{border-color:var(--gold);box-shadow:0 0 14px var(--gold);background:var(--gold)}
+.tl-yr{font-family:var(--ff-mono);font-size:.58rem;color:var(--red);letter-spacing:3px;margin-bottom:.45rem}
+.tl-box{background:var(--glass);border:1px solid var(--rborder);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);padding:1.2rem;backdrop-filter:blur(10px);transition:all .3s}
+.tl-item:hover .tl-box{border-color:rgba(200,150,12,.35);box-shadow:var(--glow-g)}
+.tl-box h3{font-family:var(--ff-body);font-weight:700;font-size:.93rem;color:var(--white);margin-bottom:.22rem}
+.tl-sub{font-family:var(--ff-mono);font-size:.6rem;color:var(--gold);margin-bottom:.55rem;letter-spacing:1px}
+.tl-box p{color:var(--muted);font-size:.78rem;line-height:1.7}
+.tl-badge{display:inline-block;font-family:var(--ff-mono);font-size:.52rem;padding:.12rem .45rem;background:rgba(139,0,0,.2);border:1px solid rgba(139,0,0,.4);color:var(--red);margin-top:.55rem;letter-spacing:1px}
+
+/* ACHIEVEMENTS */
+#achievements{background:var(--dark)}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:1.2rem}
+.ach-card{background:var(--glass);border:1px solid var(--border);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);padding:1.7rem 1.4rem;text-align:center;transition:all .4s;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.ach-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s}
+.ach-card:hover{border-color:rgba(200,150,12,.5);box-shadow:var(--glow-g2);transform:translateY(-4px)}
+.ach-card:hover::before{opacity:1}
+.ach-ico{font-size:2.2rem;display:block;margin-bottom:.8rem}
+.ach-card h3{font-family:var(--ff-body);font-weight:700;font-size:.82rem;color:var(--white);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:1px}
+.ach-card p{color:var(--muted);font-size:.73rem;line-height:1.6}
+
+/* CREATIVE */
+#creative{background:linear-gradient(180deg,var(--abyss) 0%,var(--dark) 100%)}
+.cr-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+.cr-list{display:flex;flex-direction:column;gap:.75rem}
+.cr-item{background:var(--glass);border:1px solid var(--rborder);padding:.95rem 1.1rem;display:flex;align-items:center;gap:.9rem;transition:all .3s;backdrop-filter:blur(10px);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+.cr-item:hover{border-color:rgba(200,150,12,.4);box-shadow:var(--glow-g);transform:translateX(5px)}
+.cr-rank{font-family:var(--ff-impact);font-size:1.7rem;color:rgba(200,150,12,.14);min-width:2.3rem}
+.cr-info h4{font-family:var(--ff-body);font-weight:700;font-size:.83rem;color:var(--white)}
+.cr-info span{font-family:var(--ff-mono);font-size:.58rem;color:var(--gold)}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--dark)}
+.tt-wrap{overflow:hidden;position:relative}
+.tt-track{display:flex;gap:2rem;transition:transform .5s ease}
+.tt-card{background:var(--glass);border:1px solid var(--rborder);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);padding:1.8rem;min-width:350px;flex-shrink:0;backdrop-filter:blur(12px)}
+.tt-q{font-size:1.8rem;color:var(--red);opacity:.45;margin-bottom:.7rem;font-family:var(--ff-title)}
+.tt-card p{color:var(--muted);font-size:.83rem;line-height:1.9;font-style:italic;margin-bottom:1.2rem}
+.tt-auth{display:flex;align-items:center;gap:.75rem}
+.tt-av{width:36px;height:36px;border:1px solid var(--gold);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:var(--ff-mono);font-size:.65rem;font-weight:700;color:var(--gold);background:rgba(200,150,12,.08);flex-shrink:0}
+.tt-nm{font-weight:700;font-size:.83rem;color:var(--white)}
+.tt-role{font-family:var(--ff-mono);font-size:.58rem;color:var(--muted)}
+.tt-ctrl{display:flex;gap:.75rem;margin-top:1.7rem;justify-content:center}
+.tt-btn{width:32px;height:32px;border:1px solid var(--dim);background:transparent;color:var(--muted);cursor:none;font-size:.88rem;display:flex;align-items:center;justify-content:center;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:all .25s}
+.tt-btn:hover{border-color:var(--gold);color:var(--gold);box-shadow:var(--glow-g)}
+
+/* FAQ */
+#faq{background:var(--abyss)}
+.faq-list{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:.85rem}
+.faq-item{background:var(--glass);border:1px solid var(--rborder);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);overflow:hidden;transition:border-color .3s;backdrop-filter:blur(10px)}
+.faq-item.open{border-color:rgba(200,150,12,.4)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.05rem 1.35rem;cursor:none}
+.faq-q h3{font-family:var(--ff-body);font-weight:600;font-size:.86rem;color:var(--white)}
+.faq-ico{width:20px;height:20px;border:1px solid var(--dim);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.72rem;transition:all .3s;flex-shrink:0}
+.faq-item.open .faq-ico{transform:rotate(135deg);border-color:var(--gold);color:var(--gold)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.faq-item.open .faq-a{max-height:250px;padding:0 1.35rem 1.05rem}
+.faq-a p{color:var(--muted);font-size:.82rem;line-height:1.85}
+
+/* CONTACT */
+#contact{background:var(--dark);position:relative;overflow:hidden}
+.cbg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 100%,rgba(139,0,0,.12),transparent)}
+.cg{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start;position:relative;z-index:1}
+.ci h3{font-family:var(--ff-title);font-size:1.25rem;color:var(--white);margin-bottom:.85rem;line-height:1.4}
+.ci p{color:var(--muted);font-size:.85rem;line-height:1.9;margin-bottom:1.7rem}
+.cl{display:flex;flex-direction:column;gap:.65rem}
+.cl-lnk{display:flex;align-items:center;gap:.75rem;text-decoration:none;color:var(--muted);font-size:.82rem;transition:color .25s;padding:.5rem 0;border-bottom:1px solid rgba(139,0,0,.12)}
+.cl-lnk:hover{color:var(--gold)}
+.cl-ico{width:32px;height:32px;border:1px solid var(--dim);display:flex;align-items:center;justify-content:center;font-size:.78rem;transition:all .3s;flex-shrink:0;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.cl-lnk:hover .cl-ico{border-color:var(--gold);box-shadow:var(--glow-g)}
+.cf{background:var(--glass);border:1px solid var(--rborder);clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));padding:2.3rem;backdrop-filter:blur(20px)}
+.fg{margin-bottom:1.3rem}
+.fg label{font-family:var(--ff-mono);font-size:.58rem;color:var(--red);letter-spacing:3px;display:block;margin-bottom:.42rem}
+.fg input,.fg textarea{width:100%;background:rgba(139,0,0,.05);border:1px solid rgba(139,0,0,.2);padding:.65rem .85rem;color:var(--white);font-family:var(--ff-body);font-size:.83rem;outline:none;transition:all .3s;resize:none}
+.fg input:focus,.fg textarea:focus{border-color:var(--gold);box-shadow:0 0 0 1px rgba(200,150,12,.12)}
+.fg textarea{height:105px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.fsub{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--blood),var(--gold));color:var(--void);font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:3px;border:none;cursor:none;transition:all .3s;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.fsub:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(200,150,12,.3)}
+
+/* FOOTER */
+footer{background:var(--void);border-top:1px solid rgba(139,0,0,.3);padding:3rem 2rem 2rem}
+.fi{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+.fb h2{font-family:var(--ff-title);font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.65rem;letter-spacing:2px}
+.fb p{color:var(--muted);font-size:.76rem;line-height:1.8}
+.fc h4{font-family:var(--ff-mono);font-size:.56rem;color:var(--red);letter-spacing:4px;text-transform:uppercase;margin-bottom:.85rem}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:.42rem}
+.fc ul a{color:var(--muted);font-size:.76rem;text-decoration:none;transition:color .2s}
+.fc ul a:hover{color:var(--gold)}
+.fb-bot{border-top:1px solid rgba(139,0,0,.2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.fb-bot p{font-family:var(--ff-mono);font-size:.56rem;color:var(--dim)}
+.fstatus{display:flex;align-items:center;gap:.45rem;font-family:var(--ff-mono);font-size:.56rem;color:var(--muted)}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:spulse 2s ease-in-out infinite}
+@keyframes spulse{0%,100%{box-shadow:0 0 0 0 rgba(255,26,26,.4)}50%{box-shadow:0 0 0 4px rgba(255,26,26,0)}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .ag,.cg,.cr-grid,.jg{grid-template-columns:1fr}
+  .fi{grid-template-columns:1fr 1fr}
+  .nl{display:none}
+  .hbg{display:flex}
+  .nl.open{display:flex;position:fixed;top:55px;left:0;right:0;background:rgba(2,2,2,.97);backdrop-filter:blur(20px);flex-direction:column;padding:2rem;gap:1.5rem;border-bottom:1px solid rgba(139,0,0,.3)}
+}
+@media(max-width:600px){
+  .fi{grid-template-columns:1fr}
+  .proj-grid,.faves-grid,.ach-grid,.game-grid{grid-template-columns:1fr}
+  .fg-row{grid-template-columns:1fr}
+  .a-badges{grid-template-columns:1fr}
+  .h-stats{gap:1.5rem}
+  .int-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="cur">
+  <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="10,1 13,7 19,8 14.5,13 15.5,19 10,16 4.5,19 5.5,13 1,8 7,7" fill="none" stroke="#c8960c" stroke-width="1.2"/>
+    <circle cx="10" cy="10" r="2.5" fill="#ff1a1a"/>
+  </svg>
+</div>
+<div id="ctr"></div>
+<div id="embers"></div>
+<div class="scan"></div>
+<div class="vig"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <canvas id="lc"></canvas>
+  <div class="l-inner">
+    <div class="l-eye">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="32" rx="30" ry="19" stroke="#8b0000" stroke-width="1.5" opacity=".8"/>
+        <ellipse cx="32" cy="32" rx="30" ry="19" stroke="rgba(200,150,12,.3)" stroke-width=".5"/>
+        <circle cx="32" cy="32" r="11" fill="#cc0000" opacity=".9"/>
+        <circle cx="32" cy="32" r="6.5" fill="#ff1a1a"/>
+        <circle cx="29" cy="29" r="2.2" fill="rgba(255,255,255,.25)"/>
+        <line x1="2" y1="32" x2="13" y2="32" stroke="#8b0000" stroke-width="1"/>
+        <line x1="51" y1="32" x2="62" y2="32" stroke="#8b0000" stroke-width="1"/>
+        <line x1="32" y1="2" x2="32" y2="13" stroke="#8b0000" stroke-width="1"/>
+        <line x1="32" y1="51" x2="32" y2="62" stroke="#8b0000" stroke-width="1"/>
+        <animateTransform attributeName="transform" type="rotate" from="0 32 32" to="360 32 32" dur="10s" repeatCount="indefinite"/>
+      </svg>
+    </div>
+    <div class="l-name">SAWON ISLAM</div>
+    <div class="l-arc">— THE COMEBACK ARC BEGINS —</div>
+    <div class="l-bwrap"><div class="l-bfill" id="l-bar"></div></div>
+    <div class="l-pct" id="l-pct">0%</div>
+    <div class="l-st" id="l-st"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nb">
+    <div class="nb-ico">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" fill="none" stroke="#8b0000" stroke-width="1.5"/>
+        <polygon points="16,6 24,11 24,21 16,26 8,21 8,11" fill="none" stroke="rgba(200,150,12,.4)" stroke-width=".8"/>
+        <text x="16" y="21" text-anchor="middle" font-family="Cinzel Decorative" font-size="11" font-weight="900" fill="#c8960c">S</text>
+      </svg>
+    </div>
+    <span class="nb-nm">SAWON <span>ISLAM</span></span>
+  </a>
+  <ul class="nl" id="nl">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#interests">World</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nhire">CONTACT</a>
+  <div class="hbg" id="hbg" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hc"></canvas>
+  <div class="hbkg"><span class="hbkg-txt">覚醒</span></div>
+  <div class="hi">
+    <div class="h-tag">THE COMEBACK ARC · CHAPTER ONE</div>
+    <h1 class="h-name"><span class="n1">SAWON</span><span class="n2">ISLAM</span></h1>
+    <div class="h-eyes">
+      <div class="h-eye"></div>
+      <div class="h-eye" style="animation-delay:.5s"></div>
+      <div class="h-eye" style="animation-delay:1s"></div>
+    </div>
+    <div class="h-role"><span id="role-txt"></span><span class="h-cb"></span></div>
+    <p class="h-desc">Developer. Dreamer. Dark hero in his own story. Building things that matter while being unapologetically himself — an otaku, a gamer, a creator who codes by night and dreams in anime.</p>
+    <div class="h-btns">
+      <a href="#projects" class="btn-b">VIEW PROJECTS</a>
+      <a href="#about" class="btn-g">MY STORY</a>
+      <a href="#contact" class="btn-g">CONTACT</a>
+    </div>
+    <div class="h-stats">
+      <div class="hst"><span class="sn" data-t="20">0</span><span class="sl">Projects Built</span></div>
+      <div class="hst"><span class="sn" data-t="100">0</span><span class="sl">Anime Watched</span></div>
+      <div class="hst"><span class="sn" data-t="500">0</span><span class="sl">Hours Coded</span></div>
+      <div class="hst"><span class="sn" data-t="999">0</span><span class="sl">Game Hours</span></div>
+    </div>
+  </div>
+  <div class="hscroll"><div class="hsl"></div><div class="hst-txt">SCROLL</div></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sw">
+    <div class="ag">
+      <div class="rvl">
+        <div class="a-sigil">
+          <div class="sigil-svg">
+            <svg viewBox="0 0 360 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="sg" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#cc0000" stop-opacity=".22"/>
+                  <stop offset="100%" stop-color="#8b0000" stop-opacity=".04"/>
+                </radialGradient>
+              </defs>
+              <circle cx="180" cy="195" r="165" fill="url(#sg)" stroke="#8b0000" stroke-width=".8" stroke-opacity=".5"/>
+              <circle cx="180" cy="195" r="165" fill="none" stroke="rgba(200,150,12,.18)" stroke-width=".5" stroke-dasharray="4 7"/>
+              <circle cx="180" cy="195" r="125" fill="none" stroke="rgba(139,0,0,.4)" stroke-width=".7"/>
+              <circle cx="180" cy="195" r="95" fill="none" stroke="rgba(200,150,12,.13)" stroke-width=".5" stroke-dasharray="3 5"/>
+              <line x1="180" y1="30" x2="180" y2="65" stroke="#8b0000" stroke-width="1" stroke-opacity=".6"/>
+              <line x1="180" y1="325" x2="180" y2="360" stroke="#8b0000" stroke-width="1" stroke-opacity=".6"/>
+              <line x1="15" y1="195" x2="50" y2="195" stroke="#8b0000" stroke-width="1" stroke-opacity=".6"/>
+              <line x1="310" y1="195" x2="345" y2="195" stroke="#8b0000" stroke-width="1" stroke-opacity=".6"/>
+              <line x1="63" y1="63" x2="88" y2="88" stroke="rgba(200,150,12,.28)" stroke-width=".8"/>
+              <line x1="297" y1="63" x2="272" y2="88" stroke="rgba(200,150,12,.28)" stroke-width=".8"/>
+              <line x1="63" y1="327" x2="88" y2="302" stroke="rgba(200,150,12,.28)" stroke-width=".8"/>
+              <line x1="297" y1="327" x2="272" y2="302" stroke="rgba(200,150,12,.28)" stroke-width=".8"/>
+              <rect x="176" y="26" width="8" height="8" transform="rotate(45 180 30)" fill="#c8960c" opacity=".7"/>
+              <rect x="176" y="356" width="8" height="8" transform="rotate(45 180 360)" fill="#c8960c" opacity=".7"/>
+              <rect x="11" y="191" width="8" height="8" transform="rotate(45 15 195)" fill="#c8960c" opacity=".7"/>
+              <rect x="341" y="191" width="8" height="8" transform="rotate(45 345 195)" fill="#c8960c" opacity=".7"/>
+              <circle cx="180" cy="195" r="52" fill="rgba(139,0,0,.1)" stroke="#cc0000" stroke-width="1.5"/>
+              <circle cx="180" cy="195" r="28" fill="rgba(200,150,12,.07)" stroke="#c8960c" stroke-width="1"/>
+              <text x="180" y="204" text-anchor="middle" font-family="Cinzel Decorative" font-size="22" font-weight="900" fill="#c8960c" opacity=".9">S</text>
+              <circle cx="180" cy="70" r="3.5" fill="#ff1a1a" opacity=".8">
+                <animateTransform attributeName="transform" type="rotate" from="0 180 195" to="360 180 195" dur="12s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="55" cy="195" r="2.5" fill="#c8960c" opacity=".6">
+                <animateTransform attributeName="transform" type="rotate" from="0 180 195" to="-360 180 195" dur="9s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="180" cy="320" r="2" fill="#ff4444" opacity=".5">
+                <animateTransform attributeName="transform" type="rotate" from="120 180 195" to="480 180 195" dur="16s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+        </div>
+        <div class="a-badges">
+          <div class="abadge"><span class="abi">⚔</span><h4>DARK CODER</h4><p>Writes code like a protagonist mid-arc — relentless, evolving</p></div>
+          <div class="abadge"><span class="abi">🎌</span><h4>OTAKU SOUL</h4><p>Anime isn't entertainment — it's philosophy and fuel</p></div>
+          <div class="abadge"><span class="abi">🎮</span><h4>GAMER</h4><p>Reads the meta, masters mechanics, respects the grind</p></div>
+          <div class="abadge"><span class="abi">🎨</span><h4>CREATOR</h4><p>From pixel to code — building worlds, digital and real</p></div>
+        </div>
+      </div>
+      <div class="at rvr">
+        <div class="s-ey">ABOUT ME</div>
+        <h2 class="s-title">The <span>Dark Hero</span><br>Has Arrived</h2>
+        <div class="s-rule"></div>
+        <p>I'm <span class="hl">Sawon Islam</span> — a developer, creator, and die-hard anime fan who lives at the intersection of code and culture. I don't just build websites; I craft digital experiences with the same care a mangaka gives to their panels.</p>
+        <p>My path isn't the conventional one. I picked up coding not because it was expected, but because I wanted to <span class="hlr">build my own world</span> — and this is how I do it. Every project is a new arc, every bug is a boss fight, every shipped feature is a power-up.</p>
+        <div class="a-quote"><p>"A hero doesn't need approval. The arc is already decided — rise, fall, and rise again stronger."</p></div>
+        <p>When I'm not writing code, I'm watching anime at 3am, grinding ranked matches, designing content, or absorbing everything the internet has to offer. <span class="hl">Student by day. Builder by night. Otaku always.</span></p>
+        <div class="msts">
+          <div class="mst"><span class="mn">20+</span><span class="ml">PROJECTS</span></div>
+          <div class="mst"><span class="mn">100+</span><span class="ml">ANIME</span></div>
+          <div class="mst"><span class="mn">∞</span><span class="ml">PASSION</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">POWER LEVEL</div>
+      <h2 class="s-title">Technical <span>Arsenal</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+      <p style="color:var(--muted);font-size:.86rem;line-height:1.8">Skills forged through countless hours of practice, failure, and comeback.</p>
+    </div>
+    <div class="sk-tabs rv" id="sk-tabs">
+      <button class="sk-tab on" onclick="filterSk('all',this)">ALL</button>
+      <button class="sk-tab" onclick="filterSk('dev',this)">DEVELOPMENT</button>
+      <button class="sk-tab" onclick="filterSk('design',this)">DESIGN</button>
+      <button class="sk-tab" onclick="filterSk('tools',this)">TOOLS</button>
+      <button class="sk-tab" onclick="filterSk('creative',this)">CREATIVE</button>
+    </div>
+    <div class="sk-grid" id="sk-grid"></div>
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section id="interests">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">WHO I AM</div>
+      <h2 class="s-title">My <span>World</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+      <p style="color:var(--muted);font-size:.86rem;line-height:1.8">The things that shape me, fuel me, and make me who I am beyond the screen.</p>
+    </div>
+    <div class="int-grid" id="int-grid"></div>
+  </div>
+</section>
+
+<!-- ANIME FAVES -->
+<section id="animefaves">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">OTAKU TIER LIST</div>
+      <h2 class="s-title">Favourite <span>Anime</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+    </div>
+    <div class="faves-grid rv" id="anime-grid"></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">CURRENT ARC</div>
+      <h2 class="s-title">Projects I've <span>Built</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+      <p style="color:var(--muted);font-size:.86rem;line-height:1.8">Each project is a new chapter — a story of creativity, learning, and relentless shipping.</p>
+    </div>
+    <div class="proj-grid" id="proj-grid"></div>
+  </div>
+</section>
+
+<!-- GAMING -->
+<section id="gaming">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">PLAYER PROFILE</div>
+      <h2 class="s-title">Gaming <span>Stats</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+    </div>
+    <div class="game-grid rv" id="game-grid"></div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="sw">
+    <div class="jg">
+      <div class="rvl">
+        <div class="s-ey">MY ARC</div>
+        <h2 class="s-title">The <span>Journey</span></h2>
+        <div class="s-rule"></div>
+        <p style="color:var(--muted);font-size:.84rem;line-height:1.9">Every great character has an origin story. This is mine — the moments that shaped the person you see today.</p>
+      </div>
+      <div class="tl rvr" id="tl"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">UNLOCKED</div>
+      <h2 class="s-title">Achievements <span>Earned</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+    </div>
+    <div class="ach-grid" id="ach-grid"></div>
+  </div>
+</section>
+
+<!-- CREATIVE -->
+<section id="creative">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">CONTENT &amp; DESIGN</div>
+      <h2 class="s-title">Creative <span>Side</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+    </div>
+    <div class="cr-grid">
+      <div class="rvl">
+        <div style="font-family:var(--ff-mono);font-size:.62rem;color:var(--gold);letter-spacing:3px;margin-bottom:1.1rem">// FAVOURITE GENRES</div>
+        <div class="cr-list" id="genre-list"></div>
+      </div>
+      <div class="rvr">
+        <div style="font-family:var(--ff-mono);font-size:.62rem;color:var(--gold);letter-spacing:3px;margin-bottom:1.1rem">// CREATIVE SKILLS</div>
+        <div class="cr-list" id="creative-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">REPUTATION</div>
+      <h2 class="s-title">What They <span>Say</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+    </div>
+    <div class="tt-wrap rv"><div class="tt-track" id="tt"></div></div>
+    <div class="tt-ctrl"><button class="tt-btn" onclick="moveTesti(-1)">←</button><button class="tt-btn" onclick="moveTesti(1)">→</button></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">Q &amp; A</div>
+      <h2 class="s-title">Frequently <span>Asked</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+    </div>
+    <div class="faq-list rv" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="cbg"></div>
+  <div class="sw">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+      <div class="s-ey" style="justify-content:center">OPEN CHANNEL</div>
+      <h2 class="s-title">Let's <span>Connect</span></h2>
+      <div class="s-rule" style="margin:0 auto 1rem"></div>
+      <p style="color:var(--muted);font-size:.86rem;line-height:1.8">Whether it's a collab, a project, or just to talk anime — the door is open.</p>
+    </div>
+    <div class="cg">
+      <div class="rvl">
+        <div class="ci">
+          <h3>Start the Next<br>Arc Together</h3>
+          <p>I'm always open to projects, collaborations, and conversations with people passionate about what they build. Response time: usually fast — I check my messages.</p>
+          <div class="cl">
+            <a href="mailto:sawon@example.com" class="cl-lnk"><div class="cl-ico">✉</div><div><div style="font-size:.6rem;color:var(--muted);font-family:var(--ff-mono);margin-bottom:.12rem">EMAIL</div>sawon@example.com</div></a>
+            <a href="#" class="cl-lnk"><div class="cl-ico" style="font-family:var(--ff-mono);font-size:.6rem">GH</div><div><div style="font-size:.6rem;color:var(--muted);font-family:var(--ff-mono);margin-bottom:.12rem">GITHUB</div>github.com/sawonislam</div></a>
+            <a href="#" class="cl-lnk"><div class="cl-ico" style="font-family:var(--ff-mono);font-size:.6rem">LI</div><div><div style="font-size:.6rem;color:var(--muted);font-family:var(--ff-mono);margin-bottom:.12rem">LINKEDIN</div>linkedin.com/in/sawonislam</div></a>
+            <a href="#" class="cl-lnk"><div class="cl-ico">📘</div><div><div style="font-size:.6rem;color:var(--muted);font-family:var(--ff-mono);margin-bottom:.12rem">FACEBOOK</div>facebook.com/sawonislam</div></a>
+            <a href="#" class="cl-lnk"><div class="cl-ico">🎮</div><div><div style="font-size:.6rem;color:var(--muted);font-family:var(--ff-mono);margin-bottom:.12rem">DISCORD</div>sawon#0001</div></a>
+          </div>
+        </div>
+      </div>
+      <div class="rvr">
+        <div class="cf">
+          <div class="fg-row">
+            <div class="fg"><label>NAME</label><input type="text" placeholder="Your name"></div>
+            <div class="fg"><label>EMAIL</label><input type="email" placeholder="your@email.com"></div>
+          </div>
+          <div class="fg"><label>SUBJECT</label><input type="text" placeholder="Collab / Project / Just saying hi"></div>
+          <div class="fg"><label>MESSAGE</label><textarea placeholder="Tell me what's on your mind..."></textarea></div>
+          <button class="fsub" onclick="sendMsg(this)">SEND MESSAGE ⟶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div class="fb">
+      <h2>SAWON ISLAM</h2>
+      <p>Developer. Otaku. Gamer. Creator.<br>Living the comeback arc one commit at a time.</p>
+    </div>
+    <div class="fc"><h4>NAVIGATE</h4><ul><li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#journey">Journey</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div class="fc"><h4>INTERESTS</h4><ul><li><a href="#interests">Anime</a></li><li><a href="#gaming">Gaming</a></li><li><a href="#creative">Creative</a></li><li><a href="#animefaves">Fav Shows</a></li></ul></div>
+    <div class="fc"><h4>CONNECT</h4><ul><li><a href="#">GitHub</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Facebook</a></li><li><a href="#">Discord</a></li><li><a href="#">Email</a></li></ul></div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="fb-bot">
+      <p>© 2025 SAWON ISLAM · DESIGNED WITH DARKNESS AND GOLD</p>
+      <div class="fstatus"><div class="sdot"></div>ONLINE · ARC ACTIVE</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── DATA ── */
+const SKD=[
+  {n:'HTML / CSS',p:90,cat:'dev',tags:['Semantic','Animations','Grid']},
+  {n:'JavaScript',p:82,cat:'dev',tags:['ES6+','DOM','Async']},
+  {n:'React',p:75,cat:'dev',tags:['Hooks','Components','State']},
+  {n:'Python',p:70,cat:'dev',tags:['Scripts','Automation']},
+  {n:'Node.js',p:68,cat:'dev',tags:['Express','REST API']},
+  {n:'Tailwind CSS',p:78,cat:'dev',tags:['Utility','Responsive']},
+  {n:'Git & GitHub',p:85,cat:'tools',tags:['Commits','PRs','Actions']},
+  {n:'VS Code',p:95,cat:'tools',tags:['Extensions','Shortcuts']},
+  {n:'MySQL',p:65,cat:'tools',tags:['Queries','CRUD']},
+  {n:'Linux / Terminal',p:70,cat:'tools',tags:['Bash','CLI']},
+  {n:'Figma',p:72,cat:'design',tags:['UI','Prototyping']},
+  {n:'Photoshop',p:65,cat:'design',tags:['Editing','FX']},
+  {n:'Canva',p:80,cat:'design',tags:['Graphics','Posts']},
+  {n:'Video Editing',p:70,cat:'creative',tags:['Cuts','Effects']},
+  {n:'Content Writing',p:75,cat:'creative',tags:['Blog','Social']},
+  {n:'Thumbnail Design',p:82,cat:'creative',tags:['YouTube','Visual']},
+];
+const IND=[
+  {icon:'🎌',t:'Anime',d:'Living and breathing anime — shonen, seinen, psychological, dark fantasy. It\'s not a hobby, it\'s a lifestyle.',b:'OTAKU RANK: S'},
+  {icon:'🎮',t:'Gaming',d:'From mobile to PC — RPGs, battle royale, story-driven games. The grind never stops.',b:'GAMER RANK: A+'},
+  {icon:'💻',t:'Coding',d:'Building websites and projects that actually do something. Code is my second language.',b:'DEV RANK: A'},
+  {icon:'🎨',t:'Design',d:'Figma, Photoshop, Canva — creating visuals that hit different. Aesthetics matter.',b:'DESIGN RANK: B+'},
+  {icon:'📱',t:'Content Creation',d:'Thumbnails, edits, posts — putting creative energy into content that connects.',b:'CREATOR RANK: B+'},
+  {icon:'📚',t:'Learning',d:'Always absorbing — tutorials, videos, docs, communities. The arc never ends.',b:'STUDENT RANK: S'},
+  {icon:'🎵',t:'Music',d:'Anime OSTs, lo-fi, phonk — the soundtrack to every coding and gaming session.',b:'VIBE RANK: A'},
+  {icon:'🌐',t:'Internet Culture',d:'Memes, trends, communities — deeply embedded in digital world and its language.',b:'CULTURE RANK: A+'},
+];
+const AND=[
+  {e:'⚔',t:'Demon Slayer',ty:'Dark Fantasy',r:'★★★★★'},
+  {e:'💀',t:'Attack on Titan',ty:'Dark Thriller',r:'★★★★★'},
+  {e:'🔥',t:'My Hero Academia',ty:'Shonen Action',r:'★★★★☆'},
+  {e:'👁',t:'Death Note',ty:'Psychological',r:'★★★★★'},
+  {e:'⚡',t:'Naruto',ty:'Classic Shonen',r:'★★★★★'},
+  {e:'🌙',t:'Vinland Saga',ty:'Historical Dark',r:'★★★★★'},
+  {e:'🗡',t:'Jujutsu Kaisen',ty:'Supernatural',r:'★★★★★'},
+  {e:'🐉',t:'Dragon Ball Z',ty:'Classic Action',r:'★★★★☆'},
+  {e:'🎭',t:'Code Geass',ty:'Mecha / Strategy',r:'★★★★★'},
+  {e:'🔮',t:'Re:Zero',ty:'Isekai Dark',r:'★★★★☆'},
+  {e:'⚙',t:'Fullmetal Alchemist',ty:'Adventure',r:'★★★★★'},
+  {e:'🌊',t:'One Piece',ty:'Adventure Epic',r:'★★★★☆'},
+];
+const PRD=[
+  {icon:'🌐',n:'Personal Portfolio',d:'Hand-crafted portfolio with anime-inspired dark aesthetics, custom animations, and full responsive design.',tags:['HTML','CSS','JS'],gh:'#',lv:'#'},
+  {icon:'🎌',n:'Anime Tracker App',d:'Personal anime list tracker with search, ratings, and watch progress — built for otakus, by an otaku.',tags:['React','API','Storage'],gh:'#',lv:'#'},
+  {icon:'🎮',n:'Gaming Stats Dashboard',d:'Visualizes gaming session data, win rates, and playtime using charts and custom animations.',tags:['JavaScript','Chart.js','CSS'],gh:'#',lv:'#'},
+  {icon:'💬',n:'Discord Clone UI',d:'Pixel-perfect Discord interface clone — a deep dive into complex CSS layout and dark theming.',tags:['HTML','CSS','Flexbox'],gh:'#',lv:'#'},
+  {icon:'🛒',n:'E-Commerce UI',d:'Full frontend for a modern e-commerce store — product grid, cart system, and checkout flow.',tags:['React','Context API','CSS'],gh:'#',lv:'#'},
+  {icon:'📝',n:'Blog Platform',d:'Clean, minimal blogging platform with markdown support, tag filtering, and dark/light mode toggle.',tags:['Next.js','MDX','Tailwind'],gh:'#',lv:'#'},
+];
+const GMD=[
+  {icon:'🎯',n:'Free Fire',lv:'Heroic Rank',hrs:'600+ hours',p:80},
+  {icon:'🔫',n:'PUBG Mobile',lv:'Diamond Rank',hrs:'400+ hours',p:70},
+  {icon:'⚔',n:'Genshin Impact',lv:'AR 55',hrs:'300+ hours',p:65},
+  {icon:'🏆',n:'COD Mobile',lv:'Legendary',hrs:'250+ hours',p:75},
+  {icon:'🎮',n:'Minecraft',lv:'Creative Master',hrs:'200+ hours',p:85},
+  {icon:'🐉',n:'Dragon Ball FighterZ',lv:'Super Saiyan',hrs:'150+ hours',p:72},
+];
+const TLD=[
+  {yr:'2024 — NOW',t:'Full-Stack Developer',sub:'Freelance & Personal Projects',d:'Shipping real projects, learning React and backend, building a presence online. The arc is in full swing.',badge:'CURRENT ARC'},
+  {yr:'2023',t:'Frontend Deep Dive',sub:'Self-Taught Journey',d:'Went all-in on JavaScript, fell in love with CSS animations, started building projects that looked good.',badge:'POWER-UP'},
+  {yr:'2022',t:'First Lines of Code',sub:'HTML & CSS Beginnings',d:'Wrote "Hello World" for the first time. Spent late nights watching tutorials, breaking things, fixing them.',badge:'ORIGIN'},
+  {yr:'2021',t:'Anime Changed Everything',sub:'Awakening Arc',d:'Discovered that characters like Levi, Light, and Guts show what relentless dedication looks like. That energy transferred.',badge:'AWAKENING'},
+  {yr:'2020',t:'Student Life Begins',sub:'Academic Journey',d:'Started formal education while building skills the classroom couldn\'t teach.',badge:'START'},
+];
+const ACD=[
+  {icon:'🏆',t:'FIRST PROJECT SHIPPED',d:'Built and deployed a real website — the hardest and most satisfying moment'},
+  {icon:'⭐',t:'100 ANIME MILESTONE',d:'Crossed 100 completed anime — a badge of honour in any otaku\'s journey'},
+  {icon:'🎮',t:'HEROIC RANK',d:'Reached Heroic rank in Free Fire — dedication and countless hours proved worthy'},
+  {icon:'💻',t:'OPEN SOURCE DEBUT',d:'Made first GitHub contribution and published first public repository'},
+  {icon:'🎨',t:'FIRST DESIGN PAID',d:'Created thumbnail assets that someone actually paid for — validation unlocked'},
+  {icon:'🌐',t:'ONLINE PRESENCE',d:'Built an audience across social platforms through consistent content creation'},
+];
+const GND=[
+  {n:'Dark Fantasy / Shonen',sub:'Demon Slayer, AoT, JJK'},
+  {n:'Psychological Thriller',sub:'Death Note, Monster, Promised Neverland'},
+  {n:'Isekai',sub:'Re:Zero, Overlord, SAO'},
+  {n:'Historical Action',sub:'Vinland Saga, Berserk'},
+  {n:'Mecha / Strategy',sub:'Code Geass, Evangelion'},
+];
+const CRD=[
+  {n:'YouTube Thumbnail Design',sub:'High CTR, anime & gaming style'},
+  {n:'Social Media Graphics',sub:'Posts, banners, profile assets'},
+  {n:'Video Editing',sub:'Reels, highlights, anime edits'},
+  {n:'Logo & Brand Design',sub:'Identity systems, icon sets'},
+  {n:'UI / Interface Design',sub:'Figma prototypes, wireframes'},
+];
+const TSD=[
+  {q:'Sawon built our website and genuinely blew us away. He doesn\'t just follow templates — he puts real thought into every detail. The animations alone made it worth it.',n:'Rafi H.',r:'Client · Online Store Owner',i:'RH'},
+  {q:'Working with Sawon on our group project was different. He comes in with ideas, executes them properly, and actually gives a damn about the result.',n:'Mehedi I.',r:'Classmate & Collaborator',i:'MI'},
+  {q:'Asked Sawon for a thumbnail and he delivered something I\'d pay five times for. The guy has genuine taste. Rare.',n:'Sakib R.',r:'Content Creator',i:'SR'},
+  {q:'He helped me debug a project at midnight and stayed until it worked. That dedication is real — not everyone does that.',n:'Tasin A.',r:'Developer Friend',i:'TA'},
+];
+const FQD=[
+  {q:'Are you available for freelance projects?',a:'Yes! I take on freelance web development and design projects. Whether it\'s a personal portfolio, small business site, or web app, I\'m interested. Reach out and let\'s talk scope and timeline.'},
+  {q:'What kind of projects do you like working on?',a:'I love projects with creative freedom — anime-themed platforms, gamer sites, portfolios, anything that lets me push the visual side. If you have a fun vision, I want in.'},
+  {q:'You\'re a student — how do you have time for all this?',a:'Late nights, skipped sleep, lo-fi music, and the obsessive energy that anime teaches you. When you genuinely love what you build, time has a way of appearing.'},
+  {q:'What\'s your favourite anime of all time?',a:'Attack on Titan for storytelling. Death Note for philosophy. Demon Slayer for art. But if I have to pick one — AoT. It changed how I think about narrative, sacrifice, and perspective.'},
+  {q:'Do you do collaborations or team projects?',a:'Absolutely. Hit me up on Discord or email — if the vibe is right, let\'s build something together.'},
+  {q:'What\'s next for you?',a:'Leveling up constantly. More backend, more full-stack, more public projects. Eventually working on something thousands of people use. The arc continues.'},
+];
+
+/* ── RENDER ── */
+function renderSk(f='all'){
+  const g=document.getElementById('sk-grid');g.innerHTML='';
+  SKD.filter(s=>f==='all'||s.cat===f).forEach((s,i)=>{
+    const d=document.createElement('div');d.className='sk-card rv';d.style.transitionDelay=(i%4*.08)+'s';
+    d.innerHTML=`<div class="sk-h"><span class="sk-nm">${s.n}</span><span class="sk-p">${s.p}%</span></div><div class="sk-bg"><div class="sk-fill" data-p="${s.p}"></div></div><div class="sk-tags">${s.tags.map(t=>`<span class="sk-tag">${t}</span>`).join('')}</div>`;
+    g.appendChild(d);
+  });
+  obsRv();
+  setTimeout(()=>document.querySelectorAll('.sk-fill').forEach(b=>{b.style.width=b.dataset.p+'%'}),300);
+}
+function filterSk(cat,btn){document.querySelectorAll('.sk-tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');renderSk(cat)}
+function renderInt(){const g=document.getElementById('int-grid');IND.forEach((x,i)=>{const d=document.createElement('div');d.className='int-card rv';d.style.transitionDelay=(i%4*.07)+'s';d.innerHTML=`<span class="int-ico">${x.icon}</span><h3>${x.t}</h3><p>${x.d}</p><span class="int-badge">${x.b}</span>`;g.appendChild(d);})}
+function renderAnime(){const g=document.getElementById('anime-grid');AND.forEach((a,i)=>{const d=document.createElement('div');d.className='fave-card rv';d.style.transitionDelay=(i%6*.055)+'s';d.innerHTML=`<span class="fave-e">${a.e}</span><div class="fave-t">${a.t}</div><div class="fave-ty">${a.ty}</div><div class="fave-r">${a.r}</div>`;g.appendChild(d);})}
+function renderProj(){const g=document.getElementById('proj-grid');PRD.forEach((p,i)=>{const d=document.createElement('div');d.className='proj-card rv';d.style.transitionDelay=(i%3*.1)+'s';d.innerHTML=`<div class="proj-img"><div class="proj-ico">${p.icon}</div><div class="proj-ov"><a href="${p.gh}" class="plink gh">GITHUB</a><a href="${p.lv}" class="plink lv">LIVE</a></div></div><div class="proj-body"><div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div><h3>${p.n}</h3><p>${p.d}</p></div>`;g.appendChild(d);})}
+function renderGame(){const g=document.getElementById('game-grid');GMD.forEach((x,i)=>{const d=document.createElement('div');d.className='game-card rv';d.style.transitionDelay=(i%3*.08)+'s';d.innerHTML=`<span class="game-ico">${x.icon}</span><h3>${x.n}</h3><div class="game-lv">${x.lv}</div><div class="game-hr">${x.hrs}</div><div class="rbg"><div class="rb" style="width:${x.p}%"></div></div>`;g.appendChild(d);})}
+function renderTL(){const c=document.getElementById('tl');TLD.forEach(t=>{c.innerHTML+=`<div class="tl-item rv"><div class="tl-gem"></div><div class="tl-yr">${t.yr}</div><div class="tl-box"><h3>${t.t}</h3><div class="tl-sub">${t.sub}</div><p>${t.d}</p><span class="tl-badge">${t.badge}</span></div></div>`;})}
+function renderAch(){const g=document.getElementById('ach-grid');ACD.forEach((a,i)=>{const d=document.createElement('div');d.className='ach-card rv';d.style.transitionDelay=(i%4*.08)+'s';d.innerHTML=`<span class="ach-ico">${a.icon}</span><h3>${a.t}</h3><p>${a.d}</p>`;g.appendChild(d);})}
+function renderCr(){const gl=document.getElementById('genre-list'),cl=document.getElementById('creative-list');GND.forEach((g,i)=>{gl.innerHTML+=`<div class="cr-item rv" style="transition-delay:${i*.07}s"><div class="cr-rank">0${i+1}</div><div class="cr-info"><h4>${g.n}</h4><span>${g.sub}</span></div></div>`});CRD.forEach((c,i)=>{cl.innerHTML+=`<div class="cr-item rv" style="transition-delay:${i*.07}s"><div class="cr-rank">0${i+1}</div><div class="cr-info"><h4>${c.n}</h4><span>${c.sub}</span></div></div>`})}
+function renderTesti(){const t=document.getElementById('tt');TSD.forEach(x=>{t.innerHTML+=`<div class="tt-card"><div class="tt-q">❝</div><p>${x.q}</p><div class="tt-auth"><div class="tt-av">${x.i}</div><div><div class="tt-nm">${x.n}</div><div class="tt-role">${x.r}</div></div></div></div>`;})}
+let tIdx=0;
+function moveTesti(dir){const track=document.getElementById('tt');const cards=track.querySelectorAll('.tt-card');tIdx=Math.max(0,Math.min(cards.length-1,tIdx+dir));track.style.transform=`translateX(-${tIdx*370}px)`}
+function renderFAQ(){const c=document.getElementById('faq-list');FQD.forEach((f,i)=>{const d=document.createElement('div');d.className='faq-item rv';d.innerHTML=`<div class="faq-q" onclick="toggleFaq(${i})"><h3>${f.q}</h3><div class="faq-ico">+</div></div><div class="faq-a"><p>${f.a}</p></div>`;c.appendChild(d);})}
+function toggleFaq(i){document.querySelectorAll('.faq-item').forEach((el,idx)=>{if(idx===i)el.classList.toggle('open');else el.classList.remove('open')})}
+
+/* ── TYPEWRITER ── */
+const ROLES=['Developer','Anime Enthusiast','Gamer','Content Creator','UI Designer','Student'];
+let rI=0,cI=0,del=false;
+function typeW(){
+  const el=document.getElementById('role-txt');const cur=ROLES[rI];
+  if(!del){el.textContent=cur.slice(0,cI+1);cI++;if(cI===cur.length){del=true;setTimeout(typeW,2000);return;}}
+  else{el.textContent=cur.slice(0,cI-1);cI--;if(cI===0){del=false;rI=(rI+1)%ROLES.length;}}
+  setTimeout(typeW,del?52:92);
+}
+
+/* ── COUNTER ── */
+function animCtr(){
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const tgt=+el.dataset.t,dur=1600;let st=null;
+    function step(t){if(!st)st=t;const p=Math.min((t-st)/dur,1);el.textContent=Math.floor(p*tgt);if(p<1)requestAnimationFrame(step);else el.textContent=tgt+'+'}
+    requestAnimationFrame(step);
+  });
+}
+
+/* ── SCROLL REVEAL ── */
+function obsRv(){
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.1});
+  document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>io.observe(el));
+}
+
+/* ── CURSOR ── */
+const curEl=document.getElementById('cur'),ctrEl=document.getElementById('ctr');
+document.addEventListener('mousemove',e=>{curEl.style.left=e.clientX+'px';curEl.style.top=e.clientY+'px';ctrEl.style.left=e.clientX+'px';ctrEl.style.top=e.clientY+'px'});
+document.querySelectorAll('a,button,.proj-card,.int-card,.fave-card,.ach-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{curEl.style.transform='translate(-50%,-50%) scale(1.5)';ctrEl.style.width='54px';ctrEl.style.height='54px';ctrEl.style.borderColor='rgba(200,150,12,.7)'});
+  el.addEventListener('mouseleave',()=>{curEl.style.transform='translate(-50%,-50%) scale(1)';ctrEl.style.width='40px';ctrEl.style.height='40px';ctrEl.style.borderColor='rgba(200,150,12,.45)'});
+});
+
+/* ── HERO CANVAS ── */
+function initHC(){
+  const canvas=document.getElementById('hc'),ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function rs(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;pts=[];for(let i=0;i<80;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.7+.3,a:Math.random(),col:Math.random()<.5?'255,26,26':'200,150,12'})}
+  let hx=0,hy=0;canvas.addEventListener('mousemove',e=>{hx=e.offsetX;hy=e.offsetY});
+  function draw(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;const dx=p.x-hx,dy=p.y-hy,d=Math.sqrt(dx*dx+dy*dy);if(d<90){p.x-=dx*.022;p.y-=dy*.022}ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.col},${p.a*.45})`;ctx.fill()});pts.forEach((p,i)=>{for(let j=i+1;j<pts.length;j++){const dx=p.x-pts[j].x,dy=p.y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<95){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(139,0,0,${(1-d/95)*.12})`;ctx.lineWidth=.5;ctx.stroke()}}});requestAnimationFrame(draw)}
+  rs();draw();window.addEventListener('resize',rs);
+}
+
+/* ── LOADER CANVAS ── */
+function initLC(){
+  const canvas=document.getElementById('lc'),ctx=canvas.getContext('2d');
+  let W,H,sparks=[];
+  function rs(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function mk(){const a=Math.random()*Math.PI*2,sp=Math.random()*3+.4;return{x:W/2,y:H/2,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,decay:.006+Math.random()*.008,r:Math.random()*2.2+.4,col:Math.random()<.6?'255,26,26':'200,150,12'}}
+  for(let i=0;i<250;i++)sparks.push(mk());
+  function draw(){ctx.fillStyle='rgba(2,2,2,0.12)';ctx.fillRect(0,0,W,H);sparks.forEach((s,i)=>{s.x+=s.vx;s.y+=s.vy;s.life-=s.decay;s.vx*=.998;s.vy*=.998;if(s.life>0){ctx.beginPath();ctx.arc(s.x,s.y,s.r*s.life,0,Math.PI*2);ctx.fillStyle=`rgba(${s.col},${s.life*.75})`;ctx.fill()}else Object.assign(s,mk())});requestAnimationFrame(draw)}
+  rs();draw();
+}
+
+/* ── EMBERS ── */
+function initEmbers(){
+  const w=document.getElementById('embers');
+  for(let i=0;i<25;i++){const em=document.createElement('div');em.className='ember';const sz=Math.random()*3+1,ex=((Math.random()-.5)*100)+'px';em.style.cssText=`--ex:${ex};left:${Math.random()*100}%;bottom:-10px;width:${sz}px;height:${sz}px;background:${Math.random()<.5?'rgba(255,26,26,'+(Math.random()*.35+.08)+')':'rgba(200,150,12,'+(Math.random()*.25+.08)+')'};animation-duration:${8+Math.random()*14}s;animation-delay:${Math.random()*10}s`;w.appendChild(em)}
+}
+
+/* ── NAV ── */
+function toggleNav(){document.getElementById('nl').classList.toggle('open')}
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.background=window.scrollY>60?'rgba(2,2,2,.97)':'rgba(2,2,2,.8)'});
+
+/* ── CONTACT ── */
+function sendMsg(btn){btn.textContent='MESSAGE SENT ✓';btn.style.background='linear-gradient(135deg,#003300,#c8960c)';setTimeout(()=>{btn.textContent='SEND MESSAGE ⟶';btn.style.background=''},3000)}
+
+/* ── LOADER ── */
+const LMSG=['LOADING ASSETS...','AWAKENING SYSTEM...','SUMMONING POWER...','BREAKING THE SEAL...','ACTIVATING SHARINGAN...','FINAL FORM LOADING...','COMEBACK ARC BEGINS...','SYSTEM ONLINE ⚔'];
+function startLoader(){
+  initLC();
+  const bar=document.getElementById('l-bar'),pct=document.getElementById('l-pct'),st=document.getElementById('l-st');
+  let prog=0;
+  const iv=setInterval(()=>{
+    prog=Math.min(100,prog+Math.random()*2.8+.7);
+    bar.style.width=prog+'%';pct.textContent=Math.floor(prog)+'%';st.textContent=LMSG[Math.floor(prog/12.5)];
+    if(prog>=100){clearInterval(iv);setTimeout(()=>{document.getElementById('loader').classList.add('lo');setTimeout(()=>{document.getElementById('loader').style.display='none';afterLoad()},750)},600)}
+  },38);
+}
+function afterLoad(){typeW();animCtr();obsRv()}
+
+/* ── INIT ── */
+renderSk();renderInt();renderAnime();renderProj();renderGame();renderTL();renderAch();renderCr();renderTesti();renderFAQ();
+initEmbers();initHC();startLoader();
+</script>
+</body>
+</html>
